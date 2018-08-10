@@ -1,0 +1,18 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+    <form action="{% url 'estoque:produto-adicionar' %}" enctype="multipart/form-data" role="form" method="post">
+        {% csrf_token %}
+        
+        {% bootstrap_form form %}
+        
+        {% buttons %}
+            {% bootstrap_button "Salvar" button_type="submit" button_class="btn-primary" %}
+            {% bootstrap_button "Cancelar" button_type="reset" button_class="btn-primary" %}
+        {% endbuttons %}
+    </form>
+
+{% endblock %}

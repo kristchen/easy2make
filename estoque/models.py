@@ -3,6 +3,14 @@ from django.urls import reverse
 
 class Categoria(models.Model):
     descricao = models.CharField(max_length=255, null=False)
+    def get_absolute_url(self):
+        return reverse('estoque:categoria-adicionar')
+    
+    def __str__(self):
+        return u'{0}'.format(self.descricao)
+    
+    class Meta:
+        unique_together = ('descricao',)
 
 class Produto(models.Model):
     descricao = models.CharField(max_length=255, null=False)
@@ -11,10 +19,10 @@ class Produto(models.Model):
     quantidade = models.IntegerField(null=False, default=0)
     modelo = models.CharField(max_length=255, blank=True, default='')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    imagem = models.ImageField(blank=True)
+    imagem = models.ImageField(blank=False, upload_to='imagens/')
 
     def get_absolute_url(self):
-        return reverse('produto:adicionar')
+        return reverse('estoque:produto-adicionar')
 
 
 
