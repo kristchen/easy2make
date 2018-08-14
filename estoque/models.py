@@ -22,7 +22,7 @@ class Produto(models.Model):
     imagem = models.ImageField(blank=False, upload_to='imagens/')
 
     def get_absolute_url(self):
-        return reverse('estoque:produto-adicionar')
+        return reverse('estoque:produto-pesquisar')
 
 
 

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <form action="{% url 'estoque:categoria-alterar' %}" role="form" method="post">
+    <form action="{% url 'estoque:categoria-alterar' categoria.id %}" role="form" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}

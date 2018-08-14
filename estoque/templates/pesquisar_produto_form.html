@@ -1,0 +1,47 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+{% load bootstrap_pagination %}
+{% block content %}
+
+    <form action="{% url 'estoque:produto-pesquisar' %}" role="form" method="get">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            {% bootstrap_field field %}
+        {% endfor %}
+        
+        {% buttons %}
+            {% bootstrap_button "Pesquisar" button_type="submit" button_class="btn-primary" %}
+            
+            <a href="{% url 'estoque:produto-adicionar' %}" >
+                    <button type="button" class="btn btn-primary">
+                            Cadastrar
+                    </button>                
+            </a>
+        {% endbuttons %}
+
+    </form>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th></th>
+        </tr>
+        {% for object in object_list %}
+        <tr>
+            <td>{{object.descricao}}</td>
+            <td>{{object.preco}}</td>
+            <td>{{object.quantidade}}</td>
+            <td>
+                <a href="{% url 'estoque:produto-alterar' object.id %}">
+                    Detalhes
+                </a>
+            </td>  
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

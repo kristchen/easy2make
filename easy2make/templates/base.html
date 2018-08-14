@@ -10,6 +10,7 @@
 
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
 </head>
 
@@ -27,19 +28,11 @@
                                         <ul id="menu-content" class="menu-content collapse out">
                         
                                             <li  data-toggle="collapse" data-target="#estoque" class="collapsed active">
-                                            <a href="#"><i class="fa fa-gift fa-lg"></i> Estoque <span class="arrow"></span></a>
+                                                <a href="#"><i class="fa fa-gift fa-lg"></i> Estoque <span class="arrow"></span></a>
                                             </li>
                                             <ul class="sub-menu collapse" id="estoque">
-                                                <li class="active"><a href="#">CSS3 Animation</a></li>
-                                                <li><a href="#">General</a></li>
-                                                <li><a href="#">Buttons</a></li>
-                                                <li><a href="#">Tabs & Accordions</a></li>
-                                                <li><a href="#">Typography</a></li>
-                                                <li><a href="#">FontAwesome</a></li>
-                                                <li><a href="#">Slider</a></li>
-                                                <li><a href="#">Panels</a></li>
-                                                <li><a href="#">Widgets</a></li>
-                                                <li><a href="#">Bootstrap Model</a></li>
+                                                <li><a href="{% url 'estoque:produto-pesquisar' %}">Produtos</a></li>
+                                                <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categoria</a></li>
                                             </ul>
 
                                             <ul id="menu-content" class="menu-content collapse out">
@@ -49,25 +42,23 @@
                                                 </li>
                                                 <ul class="sub-menu collapse" id="vendas">
                                                     <li class="active"><a href="#">CSS3 Animation</a></li>
-                                                    <li><a href="#">General</a></li>
-                                                    <li><a href="#">Buttons</a></li>
-                                                    <li><a href="#">Tabs & Accordions</a></li>
-                                                    <li><a href="#">Typography</a></li>
-                                                    <li><a href="#">FontAwesome</a></li>
-                                                    <li><a href="#">Slider</a></li>
-                                                    <li><a href="#">Panels</a></li>
-                                                    <li><a href="#">Widgets</a></li>
-                                                    <li><a href="#">Bootstrap Model</a></li>
                                                 </ul>
                                             </ul>
                                         </ul>
                                 </div>
+
+                                <div>
+
+                                    <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
+
+                                </div>
+
                             </div>                    
 
                 </aside>
                 
-                <article class="col-md-6">
-    
+                <article class="col-md-6" style="margin-top:15px">
+                        
                         {% block content %}
         
                         {% endblock %}

@@ -1,8 +1,13 @@
 from django.shortcuts import render, reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from search_views.search import SearchListView
+from search_views.filters import BaseFilter
 from .models import Produto, Categoria
-from .forms import ProdutoForm
+from .forms import ProdutoForm, ProdutoListForm
+from django.core.paginator import Paginator
+
 
 class ProdutoCreate(CreateView):
     model = Produto
@@ -25,6 +30,18 @@ class ProdutoUpdate(UpdateView):
     def get_success_url(self):
         return reverse('estoque:produto-alterar', kwargs=self.kwargs)
 
+
+class ProdutoFilter(BaseFilter):
+    search_fields = {
+        'descricao' : ['descricao'],          
+    }
+
+class ProdutoList(SearchListView):
+    model = Produto
+    template_name = 'pesquisar_produto_form.html'
+    form_class = ProdutoListForm
+    filter_class = ProdutoFilter
+
 class CategoriaCreate(CreateView):
     model = Categoria
     fields = ['descricao']
@@ -36,4 +53,8 @@ class CategoriaUpdate(UpdateView):
     template_name = 'detalhe_categoria_form.html'
 
     def get_success_url(self):
-        return reverse('estoque:categoria-alterar', kwargs=self.kwargs)  
+        return reverse('estoque:categoria-alterar', kwargs=self.kwargs)
+
+class CategoriaList(ListView):
+    model = Categoria
+    template_name = 'pesquisar_categoria_form.html'  

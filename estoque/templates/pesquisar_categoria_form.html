@@ -1,0 +1,32 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+    
+   
+        <a href="{% url 'estoque:categoria-adicionar' %}" >
+                <button style="margin-bottom: 15px;" class="btn btn-primary">
+                        Cadastrar
+                </button>                
+        </a>
+ 
+    <table class="table table-bordered">
+        <tr>
+            <th>Descrição</th>
+            <th></th>
+        </tr>
+        {% for object in object_list %}
+        <tr>
+            <td>{{object.descricao}}</td>
+            <td>
+                <a href="{% url 'estoque:categoria-alterar' object.id %}">
+                    Detalhes
+                </a>
+            </td>  
+        </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}
