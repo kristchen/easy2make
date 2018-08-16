@@ -4,13 +4,15 @@
 
 {% block content %}
     
- <div class="row" style="padding-bottom: 1rem;">
+<div class="row" style="padding-bottom: 1rem;">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'clientes:cliente-pesquisar' %}">Clientes</a></li>
-            <li class="breadcrumb-item"><a href="#">Cadastro</a></li>
+            <li class="breadcrumb-item"><a href="#">Alterar</a></li>
+            <li class="breadcrumb-item"><a href="#">{{cliente.nome}}</a></li>
         </ol>
-    </div> 
-    <form action="{% url 'clientes:cliente-adicionar' %}" role="form" method="post">
+    </div>
+
+    <form action="{% url 'clientes:cliente-alterar' cliente.id %}" role="form" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}

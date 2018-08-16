@@ -1,12 +1,11 @@
 from django.shortcuts import render, reverse
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from .models import Produto, Categoria
 from .forms import ProdutoForm, ProdutoListForm
-from django.core.paginator import Paginator
+
 
 
 class ProdutoCreate(CreateView):

@@ -4,6 +4,13 @@
 
 {% block content %}
 
+    <div class="row" style="padding-bottom: 1rem;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'estoque:categoria-pesquisar' %}">Categoria</a></li>
+            <li class="breadcrumb-item"><a href="#">Cadastrar</a></li>
+        </ol>
+    </div>
+
     <form action="{% url 'estoque:categoria-adicionar' %}" role="form" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
