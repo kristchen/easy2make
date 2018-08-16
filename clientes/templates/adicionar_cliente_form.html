@@ -3,19 +3,17 @@
 {% load bootstrap3 %}
 
 {% block content %}
-
-    <div class="row" style="padding-bottom: 1rem;">
+    
+<div class="row" style="padding-bottom: 1rem;">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'estoque:produto-pesquisar' %}">Produto</a></li>
-            <li class="breadcrumb-item"><a href="#">Cadastrar</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'clientes:cliente-adicionar' %}">Clientes</a></li>
+            <li class="breadcrumb-item"><a href="#">Cadastro</a></li>
         </ol>
     </div>
 
-    <form action="{% url 'estoque:produto-adicionar' %}" enctype="multipart/form-data" role="form" method="post">
+    <form action="{% url 'clientes:cliente-adicionar' %}" role="form" method="post">
         {% csrf_token %}
-        
         {% bootstrap_form form %}
-        
         {% buttons %}
             {% bootstrap_button "Salvar" button_type="submit" button_class="btn-primary" %}
             {% bootstrap_button "Cancelar" button_type="reset" button_class="btn-primary" %}

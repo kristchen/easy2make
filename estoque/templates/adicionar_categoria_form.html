@@ -7,7 +7,10 @@
     <form action="{% url 'estoque:categoria-adicionar' %}" role="form" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+        {% buttons %}
+            {% bootstrap_button "Salvar" button_type="submit" button_class="btn-primary" %}
+            {% bootstrap_button "Cancelar" button_type="reset" button_class="btn-primary" %}
+        {% endbuttons %}
     </form>
 
 {% endblock %}

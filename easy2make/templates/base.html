@@ -28,20 +28,20 @@
                                         <ul id="menu-content" class="menu-content collapse out">
                         
                                             <li  data-toggle="collapse" data-target="#estoque" class="collapsed active">
-                                                <a href="#"><i class="fa fa-gift fa-lg"></i> Estoque <span class="arrow"></span></a>
+                                                <a href="#"><i class="fa fa-wrench fa-lg"></i> Estoque <span class="arrow"></span></a>
                                             </li>
                                             <ul class="sub-menu collapse" id="estoque">
                                                 <li><a href="{% url 'estoque:produto-pesquisar' %}">Produtos</a></li>
-                                                <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categoria</a></li>
+                                                <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categorias</a></li>
                                             </ul>
 
                                             <ul id="menu-content" class="menu-content collapse out">
                         
-                                                <li  data-toggle="collapse" data-target="#vendas" class="collapsed active">
-                                                <a href="#"><i class="fa fa-gift fa-lg"></i> Vendas <span class="arrow"></span></a>
+                                                <li  data-toggle="collapse" data-target="#clientes" class="collapsed active">
+                                                <a href="#"><i class="fa fa-users fa-lg"></i> Clientes <span class="arrow"></span></a>
                                                 </li>
-                                                <ul class="sub-menu collapse" id="vendas">
-                                                    <li class="active"><a href="#">CSS3 Animation</a></li>
+                                                <ul class="sub-menu collapse" id="clientes">
+                                                    <li><a href="{% url 'clientes:cliente-adicionar' %}">Cadastro</a></li>
                                                 </ul>
                                             </ul>
                                         </ul>
@@ -57,7 +57,7 @@
 
                 </aside>
                 
-                <article class="col-md-6" style="margin-top:15px">
+                <article class="col-md-8" style="margin-top:15px">
                         
                         {% block content %}
         

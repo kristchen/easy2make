@@ -42,10 +42,12 @@ DJANGO_APPS = [
 THIRDY_PART_APPS = [
     'bootstrap3',
     'bootstrap_pagination',
+    'django_bootstrap_breadcrumbs'
 ]
 
 PROJECT_APPS = [
     'estoque',
+    'clientes',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRDY_PART_APPS + PROJECT_APPS

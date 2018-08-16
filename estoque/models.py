@@ -4,7 +4,7 @@ from django.urls import reverse
 class Categoria(models.Model):
     descricao = models.CharField(max_length=255, null=False)
     def get_absolute_url(self):
-        return reverse('estoque:categoria-adicionar')
+        return reverse('estoque:categoria-pesquisar')
     
     def __str__(self):
         return u'{0}'.format(self.descricao)
