@@ -5,13 +5,14 @@ from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from .models import Produto, Categoria
 from .forms import ProdutoForm, ProdutoListForm
+from django.contrib.messages.views import SuccessMessageMixin
 
 
-
-class ProdutoCreate(CreateView):
+class ProdutoCreate(SuccessMessageMixin, CreateView):
     model = Produto
     form_class = ProdutoForm
-    template_name = 'adicionar_produto_form.html'       
+    template_name = 'adicionar_produto_form.html'
+    success_message = 'Produto cadastrado com sucesso!'       
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -21,10 +22,11 @@ class ProdutoCreate(CreateView):
         else:
             return render(request, self.template_name, {'form': form})
 
-class ProdutoUpdate(UpdateView):
+class ProdutoUpdate(SuccessMessageMixin, UpdateView):
     model = Produto
     form_class = ProdutoForm
     template_name = 'detalhe_produto_form.html'
+    success_message = 'Produto alterado com sucesso!'
     
     def get_success_url(self):
         return reverse('estoque:produto-alterar', kwargs=self.kwargs)
@@ -41,15 +43,18 @@ class ProdutoList(SearchListView):
     form_class = ProdutoListForm
     filter_class = ProdutoFilter
 
-class CategoriaCreate(CreateView):
+class CategoriaCreate(SuccessMessageMixin, CreateView):
     model = Categoria
     fields = ['descricao']
     template_name = 'adicionar_categoria_form.html'
+    success_message = 'Categoria cadastrada com sucesso!'
 
-class CategoriaUpdate(UpdateView):
+class CategoriaUpdate(SuccessMessageMixin, UpdateView):
     model = Categoria
     fields = ['descricao']
     template_name = 'detalhe_categoria_form.html'
+    success_message = 'Categoria alterada com sucesso!'
+
 
     def get_success_url(self):
         return reverse('estoque:categoria-alterar', kwargs=self.kwargs)

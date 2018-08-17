@@ -1,71 +1,82 @@
+<html style="max-width:100%; overflow-x:hidden">
 
-<head>
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery=True %}
-{% bootstrap_messages %}
-{% load static from staticfiles %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">   
-
-
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-</head>
-
-{% block bootstrap3_content %}
-<body>
-    <main>    
-             <div class="row">
+    <head>
+        {% load bootstrap3 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery=True %}
+        {% load static from staticfiles %}
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">   
+        
+        
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        
+    </head>
+    
+    {% block bootstrap3_content %}
+    <body>
+        <main>    
+            <div class="row">
                 <aside class="col-md-3">
-                        <div class="nav-side-menu">
-                                <div class="brand">Easy2Make</div>
-                                <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-                            
-                                    <div class="menu-list">
-                            
-                                        <ul id="menu-content" class="menu-content collapse out">
+                    <div class="nav-side-menu">
+                        <div class="brand">Easy2Make</div>
+                        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
                         
-                                            <li  data-toggle="collapse" data-target="#estoque" class="collapsed active">
-                                                <a href="#"><i class="fa fa-wrench fa-lg"></i> Estoque <span class="arrow"></span></a>
-                                            </li>
-                                            <ul class="sub-menu collapse" id="estoque">
-                                                <li><a href="{% url 'estoque:produto-pesquisar' %}">Produtos</a></li>
-                                                <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categorias</a></li>
-                                            </ul>
-
-                                            <ul id="menu-content" class="menu-content collapse out">
-                        
-                                                <li  data-toggle="collapse" data-target="#clientes" class="collapsed active">
-                                                <a href="#"><i class="fa fa-users fa-lg"></i> Clientes <span class="arrow"></span></a>
+                        <div class="menu-list">
+                            
+                            <ul id="menu-content" class="menu-content collapse out">
+                                
+                                <li  data-toggle="collapse" data-target="#estoque" class="collapsed active">
+                                    <a href="#"><i class="fa fa-wrench fa-lg"></i> Estoque <span class="arrow"></span></a>
+                                </li>
+                                <ul class="sub-menu collapse" id="estoque">
+                                    <li><a href="{% url 'estoque:produto-pesquisar' %}">Produtos</a></li>
+                                    <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categorias</a></li>
+                                </ul>
+                                
+                                <ul id="menu-content" class="menu-content collapse out">
+                                    
+                                    <li  data-toggle="collapse" data-target="#clientes" class="collapsed active">
+                                        <a href="#"><i class="fa fa-users fa-lg"></i> Clientes <span class="arrow"></span></a>
                                                 </li>
                                                 <ul class="sub-menu collapse" id="clientes">
                                                     <li><a href="{% url 'clientes:cliente-pesquisar' %}">Pesquisar</a></li>
                                                 </ul>
                                             </ul>
                                         </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        
+                                        <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
+                                        
+                                    </div>
+                                    
+                                </div>                    
+                                
+                            </aside>
+                            
+                            <article class="col-md-8" style="margin-top:15px">
+                                {% if messages %}
+                                <div class="row">
+                                    <div class="alert alert-success">
+                                        <button class="close" data-dismiss="alert">×</button> 
+                                        {% for m in messages%}
+                                        <li>{{m}}</li>
+                                        {% endfor%}
+                                    </div>
                                 </div>
-
-                                <div>
-
-                                    <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
-
-                                </div>
-
-                            </div>                    
-
-                </aside>
-                
-                <article class="col-md-8" style="margin-top:15px">
-                        
-                        {% block content %}
-        
-                        {% endblock %}
-    
-                </article>
-            </div>
-      </main>
-
-{% endblock %}
-</body>
+                                {% endif %}
+                                
+                                {% block content %}
+                                
+                                {% endblock %}
+                                
+                            </article>
+                        </div>
+                    </main>
+                    
+                    {% endblock %}
+                </body>
+</html>

@@ -52,6 +52,8 @@ PROJECT_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRDY_PART_APPS + PROJECT_APPS
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
