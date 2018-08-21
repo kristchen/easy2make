@@ -42,13 +42,22 @@ DJANGO_APPS = [
 THIRDY_PART_APPS = [
     'bootstrap3',
     'bootstrap_pagination',
-    'django_bootstrap_breadcrumbs'
 ]
 
 PROJECT_APPS = [
     'estoque',
     'clientes',
+    'vendas',
 ]
+
+BOOTSTRAP3 = {
+
+    'jquery_url':'/static/js/jquery.min.js',
+    'base_url':'/static/css/',
+    'css_url':'/static/css/bootstrap.min.css',
+    'javascript_url':'/static/js/bootstrap.min.js',
+
+}
 
 INSTALLED_APPS = DJANGO_APPS + THIRDY_PART_APPS + PROJECT_APPS
 

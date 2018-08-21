@@ -4,13 +4,11 @@
         {% load bootstrap3 %}
         {% bootstrap_css %}
         {% bootstrap_javascript jquery=True %}
-        {% load static from staticfiles %}
+        {% load static %}
         
         <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">   
-        
-        
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <link type="text/css" href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+        <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet">
         
     </head>
     

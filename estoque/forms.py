@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, Form
+from django.forms import ModelForm, ModelChoiceField
 from django import forms
 from .models import Produto, Categoria
 
