@@ -5,6 +5,7 @@ from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from .models import Produto, Categoria
 from .forms import ProdutoForm, ProdutoListForm
+from json_views.views import JSONListView
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -43,6 +44,16 @@ class ProdutoList(SearchListView):
     form_class = ProdutoListForm
     filter_class = ProdutoFilter
 
+class ProdutoListAPI(JSONListView):
+    model = Produto
+    
+    def post(self, request, *args, **kwargs):
+        return super(ProdutoListAPI, self).get(self, request, *args, **kwargs)
+
+    def get_queryset(self):
+        descricao = self.request.POST.dict().get('descricao')
+        return Produto.objects.filter(descricao__icontains=descricao)
+
 class CategoriaCreate(SuccessMessageMixin, CreateView):
     model = Categoria
     fields = ['descricao']
@@ -54,7 +65,6 @@ class CategoriaUpdate(SuccessMessageMixin, UpdateView):
     fields = ['descricao']
     template_name = 'detalhe_categoria_form.html'
     success_message = 'Categoria alterada com sucesso!'
-
 
     def get_success_url(self):
         return reverse('estoque:categoria-alterar', kwargs=self.kwargs)

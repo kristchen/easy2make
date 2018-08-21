@@ -41,7 +41,7 @@ DJANGO_APPS = [
 
 THIRDY_PART_APPS = [
     'bootstrap3',
-    'bootstrap_pagination',
+    'json_views',
 ]
 
 PROJECT_APPS = [
