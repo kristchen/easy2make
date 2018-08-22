@@ -9,6 +9,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">   
         <link type="text/css" href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
         <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet">
+        <link rel="shortcut icon" href="{%  static 'assets/logo.ico' %}">
+
         
     </head>
     
@@ -16,9 +18,11 @@
     <body>
         <main>    
             <div class="row">
+                
                 <aside class="col-md-3">
                     <div class="nav-side-menu">
                         <div class="brand">Easy2Make</div>
+                        
                         <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
                         
                         <div class="menu-list">
@@ -28,53 +32,58 @@
                                 <li  data-toggle="collapse" data-target="#estoque" class="collapsed active">
                                     <a href="#"><i class="fa fa-wrench fa-lg"></i> Estoque <span class="arrow"></span></a>
                                 </li>
+                                
                                 <ul class="sub-menu collapse" id="estoque">
                                     <li><a href="{% url 'estoque:produto-pesquisar' %}">Produtos</a></li>
                                     <li><a href="{% url 'estoque:categoria-pesquisar' %}">Categorias</a></li>
                                 </ul>
                                 
-                                <ul id="menu-content" class="menu-content collapse out">
-                                    
-                                    <li  data-toggle="collapse" data-target="#clientes" class="collapsed active">
-                                        <a href="#"><i class="fa fa-users fa-lg"></i> Clientes <span class="arrow"></span></a>
-                                                </li>
-                                                <ul class="sub-menu collapse" id="clientes">
-                                                    <li><a href="{% url 'clientes:cliente-pesquisar' %}">Pesquisar</a></li>
-                                                </ul>
-                                            </ul>
-                                        </ul>
-                                    </div>
-                                    
-                                    <div>
-                                        
-                                        <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
-                                        
-                                    </div>
-                                    
-                                </div>                    
+                                <li  data-toggle="collapse" data-target="#clientes" class="collapsed active">
+                                    <a href="#"><i class="fa fa-users fa-lg"></i> Clientes <span class="arrow"></span></a>
+                                </li>
                                 
-                            </aside>
-                            
-                            <article class="col-md-8" style="margin-top:15px">
-                                {% if messages %}
-                                <div class="row">
-                                    <div class="alert alert-success">
-                                        <button class="close" data-dismiss="alert">×</button> 
-                                        {% for m in messages%}
-                                        <li>{{m}}</li>
-                                        {% endfor%}
-                                    </div>
+                                <ul class="sub-menu collapse" id="clientes">
+                                    <li><a href="{% url 'clientes:cliente-pesquisar' %}">Pesquisar</a></li>
+                                </ul>    
+
+                                <li  data-toggle="collapse" data-target="#vendas" class="collapsed active">
+                                        <a href="#"><i class="fa fa-shopping-cart fa-lg"></i> Vendas <span class="arrow"></span></a>
+                                </li>
+                                    
+                                <ul class="sub-menu collapse" id="vendas">
+                                    <li><a href="{% url 'vendas:vendas-form' %}">Cadastrar</a></li>
+                                </ul>    
+
+                                <div>
+                                    
+                                    <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
+                                    
                                 </div>
-                                {% endif %}
-                                
-                                {% block content %}
-                                
-                                {% endblock %}
-                                
-                            </article>
+                            </ul>            
                         </div>
-                    </main>
+                    </div>                                        
+                </aside>
+                            
+                <article class="col-md-8" style="margin-top:15px">
+                    {% if messages %}
+                    <div class="row">
+                        <div class="alert alert-success">
+                            <button class="close" data-dismiss="alert">×</button> 
+                            {% for m in messages%}
+                            <li>{{m}}</li>
+                            {% endfor%}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% block content %}
                     
                     {% endblock %}
-                </body>
+                    
+                </article>
+            </div>
+        </main>
+                    
+    </body>
+    {% endblock %}
 </html>

@@ -1,0 +1,58 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+
+<div class="row" style="padding-bottom: 1rem;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Vendas</a></li>
+        <li class="breadcrumb-item"><a href="#">Cadastrar</a></li>
+    </ol>
+</div>
+
+<form action="#" role="form">       
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label" for="id_descricao">Cliente</label>
+        <input type="text" name="cliente" maxlength="255" class="form-control" placeholder="Cliente" title="" required="" id="cliente">
+    </div>    
+</form>
+
+<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+
+<script>
+    $("#cliente").autocomplete({
+        source:function(request, response){
+            $.ajax({
+                type:'POST',
+                headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                url: "/clientes/",
+                data:{'nome' : request.term}
+            }).done(function(data){
+                
+                response($.map(data.cliente_list, function(item){
+                    return{
+                        label: item.nome,
+                        id: item.id,
+                    }
+                }));
+            });
+            
+        },
+        
+        select:function(event, ui){
+            
+        },
+        
+        change: function( event, ui ) {
+            
+        }
+            
+        });
+</script> 
+    
+    
+{% endblock %}

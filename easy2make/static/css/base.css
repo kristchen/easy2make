@@ -1,5 +1,11 @@
 body {
   font-family: 'Open Sans', sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+.ui-menu-item{
+  font-family: 'Open Sans', sans-serif;
 }
 
 .nav-side-menu {
@@ -142,8 +148,6 @@ body {
       display: block;
     }
   }
-  body {
-    margin: 0px;
-    padding: 0px;
-  }
-  
+
+
+   
