@@ -16,9 +16,44 @@
 <form action="#" role="form">       
     {% csrf_token %}
     <div class="form-group">
-        <label class="control-label" for="id_descricao">Cliente</label>
+        <label class="control-label" for="cliente">Cliente</label>
         <input type="text" name="cliente" maxlength="255" class="form-control" placeholder="Cliente" title="" required="" id="cliente">
-    </div>    
+    </div>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbody-cliente">
+
+        </tbody>
+    </table>
+
+    <div class="form-group">
+            <label class="control-label" for="descricao">Produto</label>
+            <input type="text" name="descricao" maxlength="255" class="form-control" placeholder="Produto" title="" required="" id="descricao">
+    </div>
+
+    <table class="table table-hover">
+            <thead>
+                <tr><th colspan="3">Produtos</th></tr>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbody-produto">
+
+            </tbody>
+    </table>
+
+    <input type="button" value="Processar Venda" class="btn btn-primary">
 </form>
 
 <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
@@ -37,21 +72,64 @@
                     return{
                         label: item.nome,
                         id: item.id,
+                        cliente : item
                     }
                 }));
             });
-            
         },
         
         select:function(event, ui){
+            var cliente = ui.item.cliente;
+
+            var $tr = $("<tr/>");
+            var $td = $("<td/>");
+            var $i = $("<i/>").addClass('fa fa-trash');
             
+            $tr.append($td.clone().append(cliente.nome))
+               .append($td.clone().append(cliente.telefone))
+               .append($td.clone().append($i))
+               .appendTo($("#tbody-cliente"));
+           
         },
-        
-        change: function( event, ui ) {
-            
-        }
             
         });
+
+        $("#descricao").autocomplete({
+            source:function(request, response){
+                $.ajax({
+                    type:'POST',
+                    headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                    url: "/estoque/produtos/",
+                    data:{'descricao' : request.term}
+                }).done(function(data){
+                    
+                    response($.map(data.produto_list, function(item){
+                        return{
+                            label: item.descricao,
+                            id: item.id,
+                            produto:item
+                        }
+                    }));
+                });
+            },
+            
+            select:function(event, ui){
+                
+                var produto = ui.item.produto;
+                var $input = $("<input/>").attr('type','number');
+                var $tr = $("<tr/>");
+                var $td = $("<td/>");
+                var $i = $("<i/>").addClass('fa fa-trash');
+                
+                $tr.append($td.clone().append(produto.descricao))
+                   .append($td.clone().append(produto.preco))
+                   .append($td.clone().append($input))
+                   .append($td.clone().append($i))
+                   .appendTo($("#tbody-produto"));
+
+            },
+                
+            });
 </script> 
     
     

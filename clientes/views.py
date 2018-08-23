@@ -9,14 +9,14 @@ from json_views.views import JSONListView
 
 class ClienteCreate(SuccessMessageMixin, CreateView):
     model = Cliente
-    fields = ['nome','endereco']
+    fields = ['nome','telefone','endereco']
     template_name = 'adicionar_cliente_form.html'
     success_message = 'Cliente cadastrado com sucesso!'
 
 
 class ClienteUpdate(SuccessMessageMixin, UpdateView):
     model = Cliente
-    fields = ['nome','endereco']
+    fields = ['nome','telefone','endereco']
     template_name = 'detalhe_cliente_form.html'
     success_message = 'Cliente alterado com sucesso!'
 

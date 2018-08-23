@@ -52,6 +52,7 @@ class ProdutoListAPI(JSONListView):
 
     def get_queryset(self):
         descricao = self.request.POST.dict().get('descricao')
+        
         return Produto.objects.filter(descricao__icontains=descricao)
 
 class CategoriaCreate(SuccessMessageMixin, CreateView):
