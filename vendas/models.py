@@ -10,5 +10,5 @@ class Venda(models.Model):
 class ItemVenda(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     venda = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='itens')
-    quantidade = models.PositiveIntegerField(blank=False, default=0)
+    quantidade = models.PositiveIntegerField(blank=False, default=1)
 

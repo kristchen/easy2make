@@ -11,7 +11,7 @@
         <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet">
         <link rel="shortcut icon" href="{%  static 'assets/logo.ico' %}">
 
-        
+        <title>Easy2Make</title>
     </head>
     
     {% block bootstrap3_content %}
@@ -51,7 +51,7 @@
                                 </li>
                                     
                                 <ul class="sub-menu collapse" id="vendas">
-                                    <li><a href="{% url 'vendas:vendas-form' %}">Cadastrar</a></li>
+                                    <li><a href="{% url 'vendas:vendas-create-form' %}">Cadastrar</a></li>
                                 </ul>    
 
                                 <div>

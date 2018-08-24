@@ -1,7 +1,9 @@
 from django.urls import path, include
-from .views import VendasForm
+from .views import VendasCreateForm, VendasCreateAPI, ItemVendaCreateAPI
 
 urlpatterns = [
-    path('', VendasForm.as_view(), name='vendas-form')
+    path('', VendasCreateForm.as_view(), name='vendas-create-form'),
+    path('adicionar/', VendasCreateAPI.as_view()),
+    path('itens/adicionar/', ItemVendaCreateAPI.as_view())
 ]
 

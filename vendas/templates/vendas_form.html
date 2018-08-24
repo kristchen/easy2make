@@ -15,17 +15,18 @@
 
 <form action="#" role="form">       
     {% csrf_token %}
+    <input type="hidden" id="id_venda">
     <div class="form-group">
         <label class="control-label" for="cliente">Cliente</label>
         <input type="text" name="cliente" maxlength="255" class="form-control" placeholder="Cliente" title="" required="" id="cliente">
     </div>
     
-    <table class="table table-hover">
+    <table class="table table-striped table-sm">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Telefone</th>
-                <th></th>
+                <th style="text-align:right"></th>
             </tr>
         </thead>
         <tbody id="tbody-cliente">
@@ -38,14 +39,14 @@
             <input type="text" name="descricao" maxlength="255" class="form-control" placeholder="Produto" title="" required="" id="descricao">
     </div>
 
-    <table class="table table-hover">
-            <thead>
+    <table class="table table-striped table-sm">
+            <thead class="black white-text">
                 <tr><th colspan="3">Produtos</th></tr>
                 <tr>
                     <th>Descrição</th>
                     <th>Preço</th>
                     <th>Quantidade</th>
-                    <th></th>
+                    <th style="text-align:right"></th>
                 </tr>
             </thead>
             <tbody id="tbody-produto">
@@ -83,13 +84,25 @@
 
             var $tr = $("<tr/>");
             var $td = $("<td/>");
-            var $i = $("<i/>").addClass('fa fa-trash');
+            var $i = $("<i/>").addClass('fa fa-trash cliente-remove');
             
             $tr.append($td.clone().append(cliente.nome))
                .append($td.clone().append(cliente.telefone))
                .append($td.clone().append($i))
                .appendTo($("#tbody-cliente"));
-           
+            
+            $("#cliente").val("").attr('readonly', true);
+
+            $.ajax({
+                type:'POST',
+                headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                url:'/vendas/adicionar/',
+                accept:'application/json',
+                data:{'cliente':cliente.id}
+              }).done(function(response){
+                  $("#id_venda").val(response.id);
+              });
+
         },
             
         });
@@ -116,16 +129,27 @@
             select:function(event, ui){
                 
                 var produto = ui.item.produto;
-                var $input = $("<input/>").attr('type','number');
+                var $input = $("<input/>").attr('type','number').val(1);
                 var $tr = $("<tr/>");
                 var $td = $("<td/>");
-                var $i = $("<i/>").addClass('fa fa-trash');
+                var $i = $("<i/>").addClass('fa fa-trash produto-remove');
                 
                 $tr.append($td.clone().append(produto.descricao))
                    .append($td.clone().append(produto.preco))
                    .append($td.clone().append($input))
                    .append($td.clone().append($i))
                    .appendTo($("#tbody-produto"));
+
+                
+                $.ajax({
+                    type:'POST',
+                    headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                    url:'/vendas/itens/adicionar/',
+                    accept:'application/json',
+                    data:{'venda':$("#id_venda").val(), 'produto':produto.id, 'quantidade':1}
+                  }).done(function(response){
+                        $tr.attr('id', response.id);
+                 });
 
             },
                 
