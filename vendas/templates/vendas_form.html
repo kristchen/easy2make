@@ -45,16 +45,21 @@
                 <tr>
                     <th>Descrição</th>
                     <th>Preço</th>
-                    <th>Quantidade</th>
-                    <th style="text-align:right"></th>
+                    <th class="col-sm-1" >Quantidade</th>
+                    <th class="col-sm-1"></th>
                 </tr>
             </thead>
             <tbody id="tbody-produto">
 
             </tbody>
     </table>
-
+    <hr>
+    <div class="pull-right">
+        <label>Total:</label>
+    </div>
+    
     <input type="button" value="Processar Venda" class="btn btn-primary">
+
 </form>
 
 <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
@@ -84,11 +89,11 @@
 
             var $tr = $("<tr/>");
             var $td = $("<td/>");
-            var $i = $("<i/>").addClass('fa fa-trash cliente-remove');
+            var $i = $("<i/>").addClass('fa fa-trash cliente-remove').css('cursor','pointer');
             
             $tr.append($td.clone().append(cliente.nome))
                .append($td.clone().append(cliente.telefone))
-               .append($td.clone().append($i))
+               .append($td.clone().css('text-align','right').append($i))
                .appendTo($("#tbody-cliente"));
             
             $("#cliente").val("").attr('readonly', true);
@@ -132,28 +137,66 @@
                 var $input = $("<input/>").attr('type','number').val(1);
                 var $tr = $("<tr/>");
                 var $td = $("<td/>");
-                var $i = $("<i/>").addClass('fa fa-trash produto-remove');
+                var $i = $("<i/>").addClass('fa fa-trash produto-remove').css('cursor','pointer');
                 
                 $tr.append($td.clone().append(produto.descricao))
                    .append($td.clone().append(produto.preco))
                    .append($td.clone().append($input))
-                   .append($td.clone().append($i))
+                   .append($td.clone().css('text-align','right').append($i))
                    .appendTo($("#tbody-produto"));
 
-                
                 $.ajax({
                     type:'POST',
                     headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
                     url:'/vendas/itens/adicionar/',
                     accept:'application/json',
                     data:{'venda':$("#id_venda").val(), 'produto':produto.id, 'quantidade':1}
-                  }).done(function(response){
-                        $tr.attr('id', response.id);
-                 });
+                }).done(function(response){
+                    $tr.attr('id', response.id);
+                    $("#descricao").val("");
+                });
 
             },
                 
+        });
+
+        $(document).ready(function(){
+            
+            $('#tbody-produto').on('click', '.produto-remove', function(){
+                var id = $(this).parents().eq(1).attr('id');
+                
+                $.ajax({
+                    type:'POST',
+                    headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                    url:'/vendas/itens/remover/'+id+'/',
+                    accept:'application/json',
+                });
+                
+                $(this).parents().eq(1).remove();                
             });
+
+            $('#tbody-cliente').on('click', '.cliente-remove', function(){
+                var id = $("#id_venda").val();
+                
+                $.ajax({
+                    type:'POST',
+                    headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                    url:'/vendas/remover/'+id+'/',
+                    accept:'application/json',
+                });
+                
+                $(this).parents().eq(1).remove();
+                $("#cliente").removeAttr('readonly');
+                $('#tbody-produto').children().remove();                
+            });
+
+            $('#tbody-cliente').on('change', 'input[type=number]', function(){
+
+                
+            });
+
+        });
+
 </script> 
     
     
