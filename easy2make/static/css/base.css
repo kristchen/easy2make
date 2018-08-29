@@ -4,6 +4,10 @@ body {
   padding: 0px;
 }
 
+table {
+  font-size: 14px;
+}
+
 .ui-menu-item{
   font-family: 'Open Sans', sans-serif;
 }
@@ -161,3 +165,10 @@ body {
     border-width: 1px 0;
     margin: 18px 0;
   }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

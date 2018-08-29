@@ -9,4 +9,9 @@ class VendasForm(ModelForm):
 class ItemVendaForm(ModelForm):
     class Meta:
         model = ItemVenda
-        fields = ['produto','venda','quantidade']
+        fields = ['produto','venda']
+
+class ItemVendaUpdateForm(ModelForm):
+    class Meta:
+        model = ItemVenda
+        fields = ['quantidade']

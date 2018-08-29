@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 from json_views.views import JSONFormView
-from .forms import VendasForm, ItemVendaForm
+from .forms import VendasForm, ItemVendaForm, ItemVendaUpdateForm
 from .models import Venda, ItemVenda
 from django.views.generic.detail import SingleObjectMixin
 
@@ -34,6 +34,15 @@ class ItemVendaDeleteAPI(JSONFormView):
     def post(self, request, *args, **kwargs):
         item = ItemVenda.objects.get(pk=kwargs['pk'])
         item.delete()
+        return self.render_to_response(self.get_context_data(sucess=True))
+
+class ItemVendaUpdateAPI(JSONFormView):
+
+    form_class = ItemVendaUpdateForm
+    def post(self, request, *args, **kwargs):
+        item = ItemVenda.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, instance=item)
+        form.save()
         return self.render_to_response(self.get_context_data(sucess=True))
 
 def __post__(self, classView, request, args, kwargs):

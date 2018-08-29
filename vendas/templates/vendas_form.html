@@ -36,7 +36,7 @@
 
     <div class="form-group">
             <label class="control-label" for="descricao">Produto</label>
-            <input type="text" name="descricao" maxlength="255" class="form-control" placeholder="Produto" title="" required="" id="descricao">
+            <input type="text" name="descricao" readonly maxlength="255" class="form-control" placeholder="Produto" title="" required="" id="descricao">
     </div>
 
     <table class="table table-striped table-sm">
@@ -45,6 +45,7 @@
                 <tr>
                     <th>Descrição</th>
                     <th>Preço</th>
+                    <th>Estoque</th>
                     <th class="col-sm-1" >Quantidade</th>
                     <th class="col-sm-1"></th>
                 </tr>
@@ -55,7 +56,7 @@
     </table>
     <hr>
     <div class="pull-right">
-        <label>Total:</label>
+        <label id="total">Total: R$ 0.00</label>
     </div>
     
     <input type="button" value="Processar Venda" class="btn btn-primary">
@@ -106,6 +107,7 @@
                 data:{'cliente':cliente.id}
               }).done(function(response){
                   $("#id_venda").val(response.id);
+                  $("#descricao").attr('readonly', false);
               });
 
         },
@@ -134,14 +136,20 @@
             select:function(event, ui){
                 
                 var produto = ui.item.produto;
-                var $input = $("<input/>").attr('type','number').val(1);
+                var $select = $("<select/>").addClass('form-control');
+                var $option = $("<option/>");
                 var $tr = $("<tr/>");
                 var $td = $("<td/>");
                 var $i = $("<i/>").addClass('fa fa-trash produto-remove').css('cursor','pointer');
                 
+                for(var i = 1; i <= produto.quantidade; i++){
+                    $option.clone().append(i).val(i).appendTo($select);
+                }
+
                 $tr.append($td.clone().append(produto.descricao))
                    .append($td.clone().append(produto.preco))
-                   .append($td.clone().append($input))
+                   .append($td.clone().attr('estoque', produto.quantidade).append(--produto.quantidade))
+                   .append($td.clone().attr('previous', 0).append($select))
                    .append($td.clone().css('text-align','right').append($i))
                    .appendTo($("#tbody-produto"));
 
@@ -187,12 +195,37 @@
                 
                 $(this).parents().eq(1).remove();
                 $("#cliente").removeAttr('readonly');
-                $('#tbody-produto').children().remove();                
+                $('#tbody-produto').children().remove();
+                $("#descricao").attr('readonly', false);                
             });
 
-            $('#tbody-cliente').on('change', 'input[type=number]', function(){
-
+            $('#tbody-produto').on('change', 'select', function(){
                 
+                var quantidadeAtual = $(this).val();
+                var id = $(this).parents().eq(1).attr('id');
+
+                $.ajax({
+                    type:'POST',
+                    headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                    url:'/vendas/itens/alterar/'+id+'/',
+                    data:{'quantidade':quantidadeAtual},
+                    accept:'application/json',
+                });
+
+                var total = 0;
+
+                $("#tbody-produto tr").each(function(event){
+                    
+                    var valor = parseFloat($(this).children(':nth-child(2)').text());
+                    var quantidade = parseInt($(this).children(':nth-child(4)').find('select').val()); 
+                    var estoque = parseInt($(this).children(':nth-child(3)').attr('estoque'));
+                    $(this).children(':nth-child(3)').text(estoque - quantidade);
+                    total += parseFloat((valor * quantidade).toFixed(2));
+                    
+                });
+
+                var text = total == 0 ? '0.00' : total;
+                $("#total").text("Total: R$ "+ text);
             });
 
         });
