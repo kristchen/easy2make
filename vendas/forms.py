@@ -1,10 +1,15 @@
 from django.forms import ModelForm
 from .models import Venda, ItemVenda
 
-class VendasForm(ModelForm):
+class VendaForm(ModelForm):
     class Meta:
         model = Venda
         fields = ['cliente']
+
+class VendaUpdateForm(ModelForm):
+    class Meta:
+        model = Venda
+        fields = ['situacao']
 
 class ItemVendaForm(ModelForm):
     class Meta:

@@ -1,26 +1,67 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, DetailView
 from json_views.views import JSONFormView
-from .forms import VendasForm, ItemVendaForm, ItemVendaUpdateForm
+from .forms import VendaForm, ItemVendaForm, ItemVendaUpdateForm, VendaUpdateForm
 from .models import Venda, ItemVenda
 from django.views.generic.detail import SingleObjectMixin
 
-class VendasCreateForm(TemplateView):
+class VendaCreateForm(TemplateView):
     template_name = 'vendas_form.html'
 
-class VendasCreateAPI(JSONFormView):
+class VendaCupomDetail(DetailView):
+    model = Venda
+    template_name = 'cupom_template.html'
+
+    def get_object(self):
+        venda = super(VendaCupomDetail, self).get_object()
+        venda.total = 0
+
+        for item in venda.itens.all():
+            venda.total += (item.quantidade * item.produto.preco)
+        return venda
+    
+    def get_context_data(self, **kwargs):
+        context = super(VendaCupomDetail, self).get_context_data(**kwargs)
+        venda = super(VendaCupomDetail, self).get_object()
+        
+        items = []
+        for item in venda.itens.all():
+            item.total = 0
+            item.total = item.quantidade * item.produto.preco
+            items.append(item)
+        
+        context['items'] = items
+        return context
+
+class VendaCreateAPI(JSONFormView):
    
-    form_class = VendasForm
+    form_class = VendaForm
     def post(self, request, *args, **kwargs):
-        return __post__(self, VendasCreateAPI, request, args, kwargs)
+        return __post__(self, VendaCreateAPI, request, args, kwargs)
 
-class VendasDeleteAPI(JSONFormView):
+class VendaDeleteAPI(JSONFormView):
 
-    form_class = VendasForm    
+    form_class = VendaForm    
     def post(self, request, *args, **kwargs):
         venda = Venda.objects.get(pk=kwargs['pk'])
         venda.delete()
         return self.render_to_response(self.get_context_data(sucess=True))
+
+class VendaUpdateAPI(JSONFormView):
+ 
+    form_class =  VendaUpdateForm
+    def post(self, request, *args, **kwargs):
+        venda = Venda.objects.get(pk=kwargs['pk'])
+
+        for item in venda.itens.all():
+            produto = item.produto
+            produto.quantidade -= item.quantidade
+            produto.save()
+
+        form = self.form_class(request.POST, instance=venda)
+        form.save()
+        return self.render_to_response(self.get_context_data(sucess=True))
+
 
 class ItemVendaCreateAPI(JSONFormView):
    

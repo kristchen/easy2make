@@ -1,0 +1,56 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/recibo.css' %}" type="text/css" media="print">
+
+<table class="printer-ticket">
+    
+    <thead>
+       <tr>
+           <th class="title" colspan="3">Jeff Construções</th>
+       </tr>
+       <tr>
+           <th colspan="3">{% now 'd/m/y G:i:s' %}</th>
+       </tr>
+       <tr>
+           <th colspan="3">
+               Cliente <br />
+               {{ venda.cliente.nome }}
+           </th>
+       </tr>
+       <tr>
+           <th class="ttu" colspan="3">
+               <b>Cupom não fiscal</b>
+           </th>
+       </tr>
+    </thead>
+   
+    <tbody>
+
+    {% for item in items %}
+        <tr class="top">
+           <td colspan="3">{{item.produto.descricao}}</td>
+        </tr>
+        <tr>
+           <td>R${{item.produto.preco}}</td>
+           <td>{{item.quantidade | floatformat:2}}</td>
+           <td>R${{item.total | floatformat:2}}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+   
+    <tfoot>
+       
+    <tr class="ttu">
+           <td colspan="2"><b>TOTAL</b></td>
+           <td align="right">R${{venda.total | floatformat:2}}</td>
+       </tr>
+       
+       <tr class="sup">
+           <td colspan="3" align="center">
+               easy2make
+           </td>
+       </tr>
+    </tfoot>
+
+</table>
