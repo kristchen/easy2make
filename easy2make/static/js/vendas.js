@@ -78,22 +78,29 @@ $("#descricao").autocomplete({
             $option.clone().append(i).val(i).appendTo($select);
         }
 
-        $tr.append($td.clone().append(produto.descricao))
-            .append($td.clone().append(produto.preco))
-            .append($td.clone().attr('estoque', produto.quantidade).append(--produto.quantidade))
-            .append($td.clone().css('text-align','right').append($i))
-            .appendTo($("#tbody-produto"));
+        if(produto.quantidade > 0){
+            $tr.append($td.clone().append(produto.descricao))
+                .append($td.clone().append(produto.preco))
+                .append($td.clone().attr('estoque', produto.quantidade).append(--produto.quantidade))
+                .append($td.clone().append($select))
+                .append($td.clone().css('text-align','right').append($i))
+                .appendTo($("#tbody-produto"));
+    
+            $.ajax({
+                type:'POST',
+                headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
+                url:'/vendas/itens/adicionar/',
+                accept:'application/json',
+                data:{'venda':$("#id_venda").val(), 'produto':produto.id, 'quantidade':1}
+            }).done(function(response){
+                $tr.attr('id', response.id);
+                $("#descricao").val("");
+            });
 
-        $.ajax({
-            type:'POST',
-            headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
-            url:'/vendas/itens/adicionar/',
-            accept:'application/json',
-            data:{'venda':$("#id_venda").val(), 'produto':produto.id, 'quantidade':1}
-        }).done(function(response){
-            $tr.attr('id', response.id);
-            $("#descricao").val("");
-        });
+        }else {
+            $("<div class='alert alert-danger' title='Cadastrar item'>Produto não disponível no momento</div>").dialog();
+        }
+
 
     },
         
@@ -165,18 +172,19 @@ $(document).ready(function(){
             type:'POST',
             headers: {'X-CSRFToken':$("input[name=csrfmiddlewaretoken]").val()},
             url:'/vendas/alterar/'+id+'/',
-            data:{'situacao':'F'},
             accept:'application/json',
         }).done(function(){
 
-            $(".fa-trash").css('pointer-events','none');
+            $(".fa-trash").remove();
+            $('select').attr('disabled',true);
+            $("#tbody-produto tr td:nth-child(3)").text('');
             $("#btn-finalizar").hide();
             $("#btn-cupom").show();
 
         });
     });
 
-    $("btn-cupom").click(function(){
+    $("#btn-cupom").click(function(){
         var id = $("#id_venda").val();
         
         $.ajax({

@@ -21,4 +21,44 @@
         {% endbuttons %}
     </form>
 
+    {% if cliente.compras.all %}
+    <table class="table">
+        
+        <thead>
+
+            <tr>
+                <th colspan="3">Compras</th> 
+            </tr>
+
+            <tr>
+                <th>Data</th>
+                <th>Situação</th>
+            </tr>
+
+        </thead>
+
+        {% for compra in cliente.compras.all %}
+
+        <tr>
+            <td>{{compra.data | date:'d/m/y' }}</td>
+            <td>
+                {% if compra.situacao == 'P' %}
+                    PENDENTE
+                {% else %}
+                    FINALIZADA
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'vendas:vendas-detalhe' compra.id %}">
+                    Detalhes
+                </a>
+            </td>
+        </tr>
+
+
+        {% endfor %}
+
+    </table>
+    {% endif %}
+
 {% endblock %}

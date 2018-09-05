@@ -1,0 +1,154 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+
+<div class="row" style="padding-bottom: 1rem;">
+        <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'clientes:cliente-pesquisar' %}">Clientes</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'clientes:cliente-alterar' venda.cliente.id %}">{{venda.cliente.nome}}</a></li>
+                <li class="breadcrumb-item"><a href="#">Compra {{venda.id}}</a></li>
+        </ol>
+</div>
+
+<form action="#" role="form">       
+    {% csrf_token %}
+    <input type="hidden" id="id_venda" value="{{venda.id}}">
+    <div class="form-group">
+        <label class="control-label" for="cliente">Cliente</label>
+        <input readonly type="text" name="cliente" maxlength="255" class="form-control" placeholder="Cliente" title="" required="" id="cliente">
+    </div>
+    
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th style="text-align:right"></th>
+            </tr>
+        </thead>
+        <tbody id="tbody-cliente">
+
+            <tr>
+                <td>{{venda.cliente.nome}}</td>
+                <td>{{venda.cliente.telefone}}</td>
+                
+                <td style="text-align: right;">
+                    {% if venda.situacao == 'P' %}    
+                        <i class="fa fa-trash cliente-remove" style="cursor: pointer;"></i>
+                    {% endif %}
+                </td>
+            
+            </tr>
+            
+        </tbody>
+    </table>
+    
+    <div class="form-group">
+        <label class="control-label" for="descricao">Produto</label>
+        <input type="text" name="descricao"  maxlength="255" class="form-control" placeholder="Produto" title="" required="" id="descricao">
+    </div>
+    
+    <table class="table table-striped table-sm">
+        <thead class="black white-text">
+            <tr><th colspan="3">Produtos</th></tr>
+            <tr>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th class="col-sm-1" >Quantidade</th>
+                <th class="col-sm-1"></th>
+            </tr>
+        </thead>
+        <tbody id="tbody-produto">
+            
+        {% for item in venda.itens.all %}
+            <tr id="{{item.id}}">
+                <td>{{item.produto.descricao}}</td>
+                <td>{{item.produto.preco | floatformat:2}}</td>
+                
+                
+                {% if venda.situacao == 'P' %}
+
+                    <td estoque="{{item.produto.quantidade}}">
+                        
+                        {% if item.produto.quantidade > item.quantidade %}
+                            {{item.produto.quantidade|sub:item.quantidade }}
+                        {% else %}
+                            {{item.produto.quantidade}}
+                        {% endif %}    
+
+                    </td>
+                    
+                    {% with ''|center:item.produto.quantidade as range %}
+                    <td>
+                        
+                        {% if item.produto.quantidade < item.quantidade %}
+
+                            <label>Quantidade ({{item.quantidade}}) não está mais disponvél no estoque </label>
+
+                        {% else %}
+                            
+                            <select class="form-control">
+                                {% for _ in range %}
+                                    <option 
+                                        {% if forloop.counter == item.quantidade %}
+                                            selected
+                                        {% endif %}    
+                                    value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                {% endfor %}
+                            </select>
+
+                        {% endif %}
+                    
+                    </td>
+                    {% endwith %}
+                
+                    <td style="text-align: right;">
+                        <i class="fa fa-trash produto-remove" style="cursor: pointer;"></i>
+                    </td>
+                
+                {% else %}
+                
+                <td></td>
+
+                <td>        
+                    <select class="form-control" disabled>
+                            <option>{{item.quantidade}}</option>
+                    </select>                    
+                </td>
+
+                <td></td>
+
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <hr>
+    <div class="pull-right">
+        <label id="total">Total: R$ {{venda.total}}</label>
+    </div>
+    
+    {% if venda.situacao == 'P' %}
+        <input type="button" id="btn-finalizar" value="Finalizar Venda" class="btn btn-primary">
+        <input style="display:none" type="button" id="btn-cupom" value="Imprimir Cupom" class="btn btn-primary">
+    {% else %}
+        <input type="button" id="btn-cupom" value="Imprimir Cupom" class="btn btn-primary">
+    {% endif %}
+
+
+</form>
+
+<script type="text/javascript" src="{%  static 'js/printThis.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'js/vendas.js' %}"></script> 
+
+
+{% endblock %}

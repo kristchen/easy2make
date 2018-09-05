@@ -9,7 +9,7 @@ class VendaForm(ModelForm):
 class VendaUpdateForm(ModelForm):
     class Meta:
         model = Venda
-        fields = ['situacao']
+        fields = ['situacao','data']
 
 class ItemVendaForm(ModelForm):
     class Meta:
