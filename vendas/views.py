@@ -8,8 +8,8 @@ from .forms import VendaForm, ItemVendaForm, ItemVendaUpdateForm, VendaSearchFor
 from .models import Venda, ItemVenda
 import datetime
 import json
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-
 
 class VendaFilter(BaseFilter):
     search_fields = {
@@ -26,8 +26,16 @@ class VendaList(SearchListView):
     form_class = VendaSearchForm
     filter_class = VendaFilter
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, VendaList, *args, **kwargs)
+
 class VendaCreateForm(TemplateView):
     template_name = 'vendas_form.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, VendaCreateForm, *args, **kwargs)
 
 class VendaDetail(DetailView):
     model = Venda
@@ -35,6 +43,10 @@ class VendaDetail(DetailView):
     
     def get_object(self):
         return __get_object__(self, VendaDetail)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, VendaDetail, *args, **kwargs)
 
 class VendaCupomDetail(DetailView):
     model = Venda
@@ -123,3 +135,6 @@ def __get_object__(self, classView):
     for item in venda.itens.all():
         venda.total += (item.quantidade * item.produto.preco)
     return venda
+
+def __dispatch__(self, classView, *args, **kwargs):
+    return super(classView, self).dispatch( *args, **kwargs)

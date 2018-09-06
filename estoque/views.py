@@ -18,7 +18,7 @@ class ProdutoCreate(SuccessMessageMixin, CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ProdutoCreate, self).dispatch( *args, **kwargs)       
+        return __dispatch__(self, ProdutoCreate, *args, **kwargs)       
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -33,6 +33,10 @@ class ProdutoUpdate(SuccessMessageMixin, UpdateView):
     form_class = ProdutoForm
     template_name = 'detalhe_produto_form.html'
     success_message = 'Produto alterado com sucesso!'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, ProdutoUpdate, *args, **kwargs)
     
     def get_success_url(self):
         return reverse('estoque:produto-alterar', kwargs=self.kwargs)
@@ -49,6 +53,10 @@ class ProdutoList(SearchListView):
     paginate_by = 8
     form_class = ProdutoListForm
     filter_class = ProdutoFilter
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, ProdutoList, *args, **kwargs)
 
 class ProdutoListAPI(JSONListView):
     model = Produto
@@ -67,6 +75,10 @@ class CategoriaCreate(SuccessMessageMixin, CreateView):
     template_name = 'adicionar_categoria_form.html'
     success_message = 'Categoria cadastrada com sucesso!'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, CategoriaCreate, *args, **kwargs)
+
 class CategoriaUpdate(SuccessMessageMixin, UpdateView):
     model = Categoria
     fields = ['descricao']
@@ -75,8 +87,19 @@ class CategoriaUpdate(SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('estoque:categoria-alterar', kwargs=self.kwargs)
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, CategoriaUpdate, *args, **kwargs)
 
 class CategoriaList(ListView):
     model = Categoria
     template_name = 'pesquisar_categoria_form.html'
     paginate_by = 8
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return __dispatch__(self, CategoriaList, *args, **kwargs)
+
+def __dispatch__(self, classView, *args, **kwargs):
+    return super(classView, self).dispatch( *args, **kwargs) 
