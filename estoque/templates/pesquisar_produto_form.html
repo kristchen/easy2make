@@ -29,25 +29,33 @@
 
     </form>
 
-    <table class="table table-bordered">
-        <tr>
-            <th>Descrição</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th></th>
-        </tr>
-        {% for object in object_list %}
-        <tr>
-            <td>{{object.descricao}}</td>
-            <td>{{object.preco}}</td>
-            <td>{{object.quantidade}}</td>
-            <td>
-                <a href="{% url 'estoque:produto-alterar' object.id %}">
-                    Detalhes
-                </a>
-            </td>  
-        </tr>
-        {% endfor %}
-    </table>
+    {% if  object_list %}    
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th></th>
+            </tr>
+            {% for object in object_list %}
+            <tr>
+                <td>{{object.descricao}}</td>
+                <td>{{object.preco}}</td>
+                <td>{{object.quantidade}}</td>
+                <td>
+                    <a href="{% url 'estoque:produto-alterar' object.id %}">
+                        Detalhes
+                    </a>
+                </td>  
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+
+    {% include 'easy2make/templates/paginated.html' %}
+
 
 {% endblock %}

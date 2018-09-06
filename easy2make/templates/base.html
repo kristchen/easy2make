@@ -52,11 +52,18 @@
                                     
                                 <ul class="sub-menu collapse" id="vendas">
                                     <li><a href="{% url 'vendas:vendas-create-form' %}">Cadastrar</a></li>
-                                </ul>    
+                                    <li><a href="{% url 'vendas:vendas-pesquisar' %}">Pesquisar</a></li>
+                                </ul>
+
+                                <li  class="collapsed active">
+                                        <a href="{% url 'logout' %}"><i class="fa fa-shopping-cart fa-lg"></i> Sair <span class="arrow"></span></a>
+                                </li>
+                                
+    
 
                                 <div>
                                     
-                                    <img height="300" width="299" src="{% static 'assets/logo.jpg' %}"></img>
+                                    <img height="300" width="299" src="{% static 'assets/logo.jpg' %}">
                                     
                                 </div>
                             </ul>            

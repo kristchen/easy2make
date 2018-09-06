@@ -2,10 +2,29 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View, DetailView
 from json_views.views import JSONFormView
-from .forms import VendaForm, ItemVendaForm, ItemVendaUpdateForm, VendaUpdateForm
+from search_views.search import SearchListView
+from search_views.filters import BaseFilter
+from .forms import VendaForm, ItemVendaForm, ItemVendaUpdateForm, VendaSearchForm
 from .models import Venda, ItemVenda
 import datetime
 import json
+from django.contrib.auth.decorators import login_required
+
+
+class VendaFilter(BaseFilter):
+    search_fields = {
+        'situacao' : ['situacao'],
+        'data_inicio' :{ 'operator' : '__gte', 'fields':['data']},
+        'data_fim' :{ 'operator' : '__lte', 'fields':['data']}          
+    }
+
+
+class VendaList(SearchListView):
+    model = Venda
+    template_name = 'pesquisar_venda_form.html'
+    paginate_by = 8
+    form_class = VendaSearchForm
+    filter_class = VendaFilter
 
 class VendaCreateForm(TemplateView):
     template_name = 'vendas_form.html'
@@ -16,7 +35,6 @@ class VendaDetail(DetailView):
     
     def get_object(self):
         return __get_object__(self, VendaDetail)
-
 
 class VendaCupomDetail(DetailView):
     model = Venda

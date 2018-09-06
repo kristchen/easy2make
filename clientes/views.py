@@ -6,6 +6,7 @@ from search_views.search import SearchListView
 from search_views.filters import BaseFilter
 from django.contrib.messages.views import SuccessMessageMixin
 from json_views.views import JSONListView
+from django.contrib.auth.decorators import login_required
 
 class ClienteCreate(SuccessMessageMixin, CreateView):
     model = Cliente
@@ -28,6 +29,7 @@ class ClienteFilter(BaseFilter):
 
 class ClienteList(SearchListView):
     model = Cliente
+    paginate_by = 8
     template_name = 'pesquisar_cliente_form.html'
     filter_class = ClienteFilter
 

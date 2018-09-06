@@ -1,0 +1,53 @@
+{% extends 'easy2make/templates/base.html' %}
+
+{% load bootstrap3 %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row" style="padding-bottom: 1rem;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Vendas</a></li>
+            <li class="breadcrumb-item"><a href="#">Pesquisar</a></li>
+        </ol>
+    </div>
+    
+    <form action="{% url 'vendas:vendas-pesquisar' %}" role="form" method="get">
+        {% csrf_token %}
+        
+        
+        {% for field in form %}
+            {% bootstrap_field field %}
+        {% endfor %}
+
+        {% buttons %}
+            {% bootstrap_button "Pesquisar" button_type="submit" button_class="btn-primary" %}
+        {% endbuttons %}
+
+    </form>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Data</th>
+            <th>Situação</th>
+            <th>Cliente</th>
+            <th></th>
+        </tr>
+        {% for object in object_list %}
+        <tr>
+            <td>{{object.data}}</td>
+            <td>{{object.situacao}}</td>
+            <td>{{object.cliente.nome}}</td>
+            <td>
+                <a href="{% url 'vendas:vendas-detalhe' object.id %}">
+                    Detalhes
+                </a>
+            </td>  
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% include 'easy2make/templates/paginated.html' %}
+
+
+{% endblock %}

@@ -7,13 +7,18 @@ from .models import Produto, Categoria
 from .forms import ProdutoForm, ProdutoListForm
 from json_views.views import JSONListView
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 class ProdutoCreate(SuccessMessageMixin, CreateView):
     model = Produto
     form_class = ProdutoForm
     template_name = 'adicionar_produto_form.html'
-    success_message = 'Produto cadastrado com sucesso!'       
+    success_message = 'Produto cadastrado com sucesso!'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProdutoCreate, self).dispatch( *args, **kwargs)       
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -41,6 +46,7 @@ class ProdutoFilter(BaseFilter):
 class ProdutoList(SearchListView):
     model = Produto
     template_name = 'pesquisar_produto_form.html'
+    paginate_by = 8
     form_class = ProdutoListForm
     filter_class = ProdutoFilter
 
@@ -72,4 +78,5 @@ class CategoriaUpdate(SuccessMessageMixin, UpdateView):
 
 class CategoriaList(ListView):
     model = Categoria
-    template_name = 'pesquisar_categoria_form.html'  
+    template_name = 'pesquisar_categoria_form.html'
+    paginate_by = 8

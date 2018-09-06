@@ -1,8 +1,9 @@
 from django.urls import path, include
-from .views import VendaCreateForm, VendaDetail, VendaCupomDetail, VendaUpdateAPI, ItemVendaUpdateAPI, ItemVendaDeleteAPI, VendaCreateAPI, ItemVendaCreateAPI, VendaDeleteAPI
+from .views import VendaList, VendaCreateForm, VendaDetail, VendaCupomDetail, VendaUpdateAPI, ItemVendaUpdateAPI, ItemVendaDeleteAPI, VendaCreateAPI, ItemVendaCreateAPI, VendaDeleteAPI
 
 urlpatterns = [
     path('', VendaCreateForm.as_view(), name='vendas-create-form'),
+    path('pesquisar/', VendaList.as_view(), name='vendas-pesquisar'),
     path('<int:pk>/', VendaDetail.as_view(), name='vendas-detalhe'),
     path('<int:pk>/cupom/', VendaCupomDetail.as_view()),
     path('adicionar/', VendaCreateAPI.as_view()),

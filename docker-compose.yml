@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment: 
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=easy2make"
+  web:
+    build: .
+    ports: 
+      - "8000:8000"
+    entrypoint: /easy2make/entrypoint.sh
+    depends_on:
+      - db
+    links:   
+      - db:db
