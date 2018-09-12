@@ -6,11 +6,15 @@ services:
     environment: 
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_DATABASE=easy2make"
+    restart: "always"
+    ports: 
+      - "3306:3306"
   web:
     build: .
     ports: 
       - "8000:8000"
     entrypoint: /easy2make/entrypoint.sh
+    restart: "always"
     depends_on:
       - db
     links:   
