@@ -14,7 +14,7 @@ while not database_ready:
     db_connection = None
     try:
         db_connection = pymysql.connect(host="db",
-                                        port=3306x,
+                                        port=3306,
                                         db="easy2make",
                                         user="root",
                                         password="root",
