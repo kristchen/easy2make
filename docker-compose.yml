@@ -11,6 +11,7 @@ services:
       - "3306:3306"
   web:
     build: .
+    image: "easy2make"
     ports: 
       - "8000:8000"
     entrypoint: /easy2make/entrypoint.sh
