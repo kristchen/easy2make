@@ -20,7 +20,6 @@ class Produto(models.Model):
     quantidade = models.IntegerField(null=False, default=0, validators=[MinValueValidator(0)])
     modelo = models.CharField(max_length=255, blank=True, default='')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    # imagem = models.ImageField(blank=False, upload_to='imagens/')
 
     def get_absolute_url(self):
         return reverse('estoque:produto-pesquisar')

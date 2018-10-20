@@ -92,8 +92,10 @@ class VendaUpdateAPI(View):
         for item in venda.itens.all():
             produto = item.produto
             produto.quantidade -= item.quantidade
+            total = item.quantidade * item.produto.preco
             produto.save()
         
+        venda.total = total
         venda.save()
         
         return HttpResponse(json.dumps({'sucess':True}))
@@ -131,9 +133,12 @@ def __post__(self, classView, request, args, kwargs):
 def __get_object__(self, classView):
     
     venda = super(classView, self).get_object()
-    venda.total = 0
-    for item in venda.itens.all():
-        venda.total += (item.quantidade * item.produto.preco)
+    # caso a venda não esteja finalizada
+    if venda.situacao == 'P':
+        venda.total = 0
+        for item in venda.itens.all():
+            venda.total += (item.quantidade * item.produto.preco)
+    
     return venda
 
 def __dispatch__(self, classView, *args, **kwargs):
