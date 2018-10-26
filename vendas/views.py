@@ -63,6 +63,7 @@ class VendaCupomDetail(DetailView):
         for item in venda.itens.all():
             item.total = 0
             item.total = item.quantidade * item.produto.preco
+            venda.total += item.total
             items.append(item)
         
         context['items'] = items
@@ -92,10 +93,9 @@ class VendaUpdateAPI(View):
         for item in venda.itens.all():
             produto = item.produto
             produto.quantidade -= item.quantidade
-            total = item.quantidade * item.produto.preco
+            venda.total += item.quantidade * item.produto.preco
             produto.save()
         
-        venda.total = total
         venda.save()
         
         return HttpResponse(json.dumps({'sucess':True}))
