@@ -37,8 +37,20 @@
             </tr>
             {% for object in object_list %}
             <tr>
-                <td>{{object.data}}</td>
-                <td>{{object.situacao}}</td>
+                <td>
+                    {% if object.data %}
+                        {{object.data}}
+                    {% endif %}
+                </td>
+                <td>
+                    
+                    {% if object.situacao == 'P' %}
+                        Pendente
+                    {% else %}
+                        Finalizada
+                    {% endif %}
+
+                </td>
                 <td>{{object.cliente.nome}}</td>
                 <td>
                     <a href="{% url 'vendas:vendas-detalhe' object.id %}">

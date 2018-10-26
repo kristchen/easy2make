@@ -97,6 +97,8 @@ $("#descricao").autocomplete({
                 $("#descricao").val("");
             });
 
+            atualizarTotal();
+
         }else {
             $("<div class='alert alert-danger' title='Cadastrar item'>Produto não disponível no momento</div>").dialog();
         }
@@ -118,7 +120,9 @@ $(document).ready(function(){
             accept:'application/json',
         });
         
-        $(this).parents().eq(1).remove();                
+        $(this).parents().eq(1).remove();
+        
+        atualizarTotal();
     });
 
     $('#tbody-cliente').on('click', '.cliente-remove', function(){
@@ -150,21 +154,10 @@ $(document).ready(function(){
             accept:'application/json',
         });
 
-        var total = 0;
+        atualizarTotal();
 
-        $("#tbody-produto tr").each(function(event){
-            
-            var valor = parseFloat($(this).children(':nth-child(2)').text());
-            var quantidade = parseInt($(this).children(':nth-child(4)').find('select').val()); 
-            var estoque = parseInt($(this).children(':nth-child(3)').attr('estoque'));
-            $(this).children(':nth-child(3)').text(estoque - quantidade);
-            total += parseFloat((valor * quantidade).toFixed(2));
-            
-        });
-
-        var text = total == 0 ? '0.00' : total;
-        $("#total").text("Total: R$ "+ text);
     });
+
 
     $("#btn-finalizar").click(function(){
         var id = $("#id_venda").val();
@@ -202,3 +195,22 @@ $(document).ready(function(){
     });
 
 });
+
+function atualizarTotal(){
+
+    var total = 0;
+
+    $("#tbody-produto tr").each(function(event){
+        
+        var valor = parseFloat($(this).children(':nth-child(2)').text());
+        var quantidade = parseInt($(this).children(':nth-child(4)').find('select').val()); 
+        var estoque = parseInt($(this).children(':nth-child(3)').attr('estoque'));
+        $(this).children(':nth-child(3)').text(estoque - quantidade);
+        total += parseFloat((valor * quantidade).toFixed(2));
+        
+    });
+
+    var text = total == 0 ? '0.00' : total;
+    $("#total").text("Total: R$ "+ text);
+
+}

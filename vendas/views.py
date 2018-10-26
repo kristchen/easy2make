@@ -58,6 +58,7 @@ class VendaCupomDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(VendaCupomDetail, self).get_context_data(**kwargs)
         venda = super(VendaCupomDetail, self).get_object()
+        venda.total = 0
         
         items = []
         for item in venda.itens.all():
@@ -89,6 +90,7 @@ class VendaUpdateAPI(View):
         venda = Venda.objects.get(pk=kwargs['pk'])
         venda.situacao = 'F'
         venda.data = datetime.datetime.now()
+        venda.total = 0
 
         for item in venda.itens.all():
             produto = item.produto
